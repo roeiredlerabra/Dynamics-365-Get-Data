@@ -288,54 +288,7 @@ body {
         };
 
         // Card display functions
-        function displayCard(item) {
-          const card = document.createElement("div");
-          card.classList.add("card");
-
-          const title = document.createElement("div");
-          title.classList.add("card-title");
-          title.innerText = item.title;
-
-          const field1 = document.createElement("div");
-          field1.classList.add("card-field");
-          field1.innerText = "Ticket: " + item.ticketnumber;
-
-          const field2 = document.createElement("div");
-          field2.classList.add("card-field");
-          field2.innerText =
-            "Created: " +
-            item["createdon@OData.Community.Display.V1.FormattedValue"];
-          const field3 = document.createElement("div");
-          field3.classList.add("card-field");
-          field3.innerText =
-            "modifiedon: " +
-            item["modifiedon@OData.Community.Display.V1.FormattedValue"];
-          const field4 = document.createElement("div");
-          field4.classList.add("card-field");
-          field4.innerText =
-            "statuscode: " +
-            item["statuscode@OData.Community.Display.V1.FormattedValue"];			
-
-          card.appendChild(title);
-          card.appendChild(field1);
-          card.appendChild(field2);
-          card.appendChild(field3);
-          card.appendChild(field4);
-
-          return card;
-        }
-
-        function displayCards(response) {
-          const cardsContainer = document.getElementById("cards-container");
-
-          // Clear existing cards
-          cardsContainer.innerHTML = "";
-
-          response.forEach((item) => {
-            const card = displayCard(item);
-            cardsContainer.appendChild(card);
-          });
-        }
+       
 
         // AJAX call
         $.ajax(settings)
@@ -346,7 +299,16 @@ body {
 
             } else {
 			  document.getElementById("p1").innerHTML = "Correct Password";
-              displayCards(response);
+		      // Display the user's information
+			  var infoContainer = $("#info-container");
+			  infoContainer.html(
+			    "<p>Name: " + response.displayName + "</p>" +
+			    "<p>Job Title: " + response.jobTitle + "</p>" +
+			    "<p>Email: " + response.mail + "</p>" +
+			    "<p>Company: " + response.companyName + "</p>"
+			    // Add more fields as needed
+			  );
+              
             }
           })
           .fail(function (jqXHR, textStatus, errorThrown) {
@@ -516,7 +478,7 @@ body {
       <input type="submit" value="Submit" class="submit-btn">
     </form>
   </div>
-<div id="cards-container"></div>
+<div id="info-container"></div>
   <pre id="response"></pre>
 
 
