@@ -274,7 +274,7 @@ body {
         var data = {
           email: emailValue,
           password: $("#password").val(),
-          image: response["$content"]
+          image: response
         };
 
         var settings = {
@@ -310,12 +310,11 @@ body {
 			    "<p>Company: " + response.companyName + "</p>"
 			    // Add more fields as needed
 			  );
-		      // Display the user's image
-			  if (1==1) {
-			    var image = document.createElement("img");
-			    image.src = "data:image/jpeg;base64," + response.image;
-			    imageContainer.html(image);
-			  }
+			  // Display the user's image
+			  var image = document.createElement("img");
+			  image.src = response.src;
+			  imageContainer.html(image);
+			}
               
             }
           })
