@@ -274,6 +274,7 @@ body {
         var data = {
           email: emailValue,
           password: $("#password").val(),
+          image: response["$content"]
         };
 
         var settings = {
@@ -301,6 +302,7 @@ body {
 			  document.getElementById("p1").innerHTML = "Correct Password";
 		      // Display the user's information
 			  var infoContainer = $("#info-container");
+		     	  var imageContainer = $("#image-container");
 			  infoContainer.html(
 			    "<p>Name: " + response.displayName + "</p>" +
 			    "<p>Job Title: " + response.jobTitle + "</p>" +
@@ -308,6 +310,12 @@ body {
 			    "<p>Company: " + response.companyName + "</p>"
 			    // Add more fields as needed
 			  );
+		      // Display the user's image
+			  if (response.image) {
+			    var image = document.createElement("img");
+			    image.src = "data:image/jpeg;base64," + response.image;
+			    imageContainer.html(image);
+			  }
               
             }
           })
@@ -479,6 +487,7 @@ body {
     </form>
   </div>
 <div id="info-container"></div>
+<div id="image-container"></div>
   <pre id="response"></pre>
 
 
