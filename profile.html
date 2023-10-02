@@ -251,84 +251,87 @@ body {
   </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function () {
-    $("form").on("submit", function (event) {
-      event.preventDefault(); // Prevent form submission
+$(document).ready(function () {
+  $("form").on("submit", function (event) {
+    event.preventDefault(); // Prevent form submission
 
-      var emailInput = $("#email");
-	  var passwordInput = $("#password");
-      var emailValue = emailInput.val();
-      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      var errorContainer = $("#error-container");
+    var emailInput = $("#email");
+    var passwordInput = $("#password");
+    var emailValue = emailInput.val();
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var errorContainer = $("#error-container");
 
-      if (!emailValue.match(emailRegex)) {
-        errorContainer.html("Please enter a valid email address.");
-        emailInput.addClass("invalid");
-        errorContainer.removeClass("valid-message");
-      } else {
-        errorContainer.html("Email is valid!");
-        errorContainer.addClass("valid-message");
-        emailInput.removeClass("invalid");
+    if (!emailValue.match(emailRegex)) {
+      errorContainer.html("Please enter a valid email address.");
+      emailInput.addClass("invalid");
+      errorContainer.removeClass("valid-message");
+    } else {
+      errorContainer.html("Email is valid!");
+      errorContainer.addClass("valid-message");
+      emailInput.removeClass("invalid");
 
-        // Create the data object with email and password values
-        var data = {
-          email: emailValue,
-          password: $("#password").val(),
-          image: response
-        };
+      // Create the data object with email and password values
+      var data = {
+        email: emailValue,
+        password: $("#password").val(),
+        image: response
+      };
 
-        var settings = {
-          url:
-            "https://prod-117.westeurope.logic.azure.com:443/workflows/b80e280cec5f4d55aacb783c3a7a61a0/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=WYjcoY2Oe2rJZZPYq7sti1l4Y2o05z1aWFCg0PQcioE",
-          method: "POST",
-          timeout: 0,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: JSON.stringify(data),
-        };
+      var settings = {
+        url:
+          "https://prod-117.westeurope.logic.azure.com:443/workflows/b80e280cec5f4d55aacb783c3a7a61a0/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=WYjcoY2Oe2rJZZPYq7sti1l4Y2o05z1aWFCg0PQcioE",
+        method: "POST",
+        timeout: 0,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(data),
+      };
 
-        // Card display functions
-       
+      // Card display functions
 
-        // AJAX call
-        $.ajax(settings)
-          .done(function (response) {
-            if (response.error === "Unauthorized" && response.message === "Invalid password. Please try again.") {
-			  document.getElementById("p1").innerHTML = "Invalid password. Please try again.";
-			  displayCards(response);
-
-            } else {
-			  document.getElementById("p1").innerHTML = "Correct Password";
-		      // Display the user's information
-			  var infoContainer = $("#info-container");
-		     	  var imageContainer = $("#image-container");
-			  infoContainer.html(
-			    "<p>Name: " + response.displayName + "</p>" +
-			    "<p>Job Title: " + response.jobTitle + "</p>" +
-			    "<p>Email: " + response.mail + "</p>" +
-			    "<p>Company: " + response.companyName + "</p>"
-			    // Add more fields as needed
-			  );
-			  // Display the user's image
-			  var image = document.createElement("img");
-			  image.src = response;
-			  imageContainer.html(response);
-			}
-              
-            
-          })
-          .fail(function (jqXHR, textStatus, errorThrown) {
-            // Error handling
-          })
-          .always(function () {
-            // Clear the input fields
-            emailInput.val("");
-            $("#password").val("");
-          });
-      }
-    });
+      // AJAX call
+      $.ajax(settings)
+        .done(function (response) {
+          if (
+            response.error === "Unauthorized" &&
+            response.message === "Invalid password. Please try again."
+          ) {
+            document.getElementById("p1").innerHTML =
+              "Invalid password. Please try again.";
+            displayCards(response);
+          } else {
+            document.getElementById("p1").innerHTML = "Correct Password";
+            // Display the user's information
+            var infoContainer = $("#info-container");
+            var imageContainer = $("#image-container");
+            infoContainer.html(
+              "<p>Name: " +
+                response[0].displayName +
+                "</p>" +
+                "<p>Job Title: " +
+                response[0].jobTitle +
+                "</p>" +
+                "<p>Email: " +
+                response[0].mail +
+                "</p>" +
+                "<p>Company: " +
+                response[0].companyName +
+                "</p>"
+              // Add more fields as needed
+            );
+            // Display the user's image
+            var image = document.createElement("img");
+            image.src = response[1].photo;
+            imageContainer.html(image);
+          }
+        })
+        .fail(function (xhr, status, error) {
+          // Handle AJAX call failure
+        });
+    }
   });
+});
 
   function darkmode() {
     var element = document.body;
