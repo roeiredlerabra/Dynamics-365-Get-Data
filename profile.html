@@ -332,6 +332,11 @@ $(document).ready(function () {
             errorContainer.html("An error occurred during the request. Please try again later.");
             // You can also display a specific error message or perform additional actions based on the failure status or error message.
           });
+          .always(function () {
+            // Clear the input fields
+            emailInput.val("");
+            $("#password").val("");
+          });
     }
   });
 });
