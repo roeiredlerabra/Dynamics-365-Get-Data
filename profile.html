@@ -326,9 +326,12 @@ $(document).ready(function () {
             imageContainer.html(image);
           }
         })
-        .fail(function (xhr, status, error) {
+          .fail(function (xhr, status, error) {
           // Handle AJAX call failure
-        });
+            console.log("AJAX call failed. Status: " + status + ", Error: " + error);
+            errorContainer.html("An error occurred during the request. Please try again later.");
+            // You can also display a specific error message or perform additional actions based on the failure status or error message.
+          });
     }
   });
 });
