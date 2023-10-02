@@ -322,7 +322,7 @@ $(document).ready(function () {
             );
             // Display the user's image
             var image = document.createElement("img");
-            image.src = response[1].photo;
+            image.src = "data:image/jpeg;base64," + response[1].photo;
             imageContainer.html(image);
           }
         })
